@@ -1,0 +1,48 @@
+/* PLEASE PUT ME IN A .CSS FILE */
+table {
+  border-collapse: collapse;
+}
+
+table, th {
+  border: 1px solid black;
+}
+
+td, th {
+    padding: 3px;
+}
+
+td {
+    border-left: 1px solid black;
+}
+
+h1 {
+    text-align: center;
+}
+
+.filter-element {
+    width: 49%;
+    float: left;
+    text-align: center;
+    margin-bottom: 25px;
+}
+
+.submit-button {
+    text-align: center;
+}
+
+#page-body {
+    margin: auto;
+    width: 50%;
+    border: 3px solid orange;
+    padding: 5px;
+}
+
+#table-parent {
+    text-align: center;
+    width: 70%;
+    margin: auto;
+}
+
+#table-body {
+    width: 100%;
+}

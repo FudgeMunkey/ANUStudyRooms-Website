@@ -2,98 +2,72 @@
 <html lang="en">
     <head>
         <meta charset="UTF-8">
-        <title>Title</title>
-        <style>
-            /* PLEASE PUT ME IN A .CSS FILE */
-            table {
-              border-collapse: collapse;
-            }
-            table, th {
-              border: 1px solid black;
-            }
-            td {
-                border-left: 1px solid black;
-            }
-        </style>
+        <title>ANU Study Room Timetables</title>
+        <link rel="stylesheet" type="text/css" href="../static/mainstyle.css" />
     </head>
 
     <body>
-        <h1>ANU Study Room Timetable</h1>
+        <div id="page-body">
+            <h1>ANU Study Room Timetables</h1>
 
-        <!-- FILTER FORM -->
-        <form method="POST">
-            <p><b>Building: </b></p>
-            <select name="building">
-                {% for b in buildingList %}
-                <option value={{ b }} {{ "selected" if b == buildingSelected }}>{{ b }}</option>
-                {% endfor %}
-            </select>
-
-            <br />
-
-            <p><b>Date: </b></p>
-            <select name="date">
-                {% for d in dateList %}
-                <option value={{ d }} {{ "selected" if d == dateSelected }}>{{ d }}</option>
-                {% endfor %}
-            </select>
-            <br />
-            <p><input type="submit"></p>
-        </form>
-
-        <!-- TIMETABLE PROPER CODE -->
-        <div>
-            <h1>{{ dateSelected }}</h1>
-            <table>
-                <tr>
-                    <th>Times</th>
-                    {% for room_name in titles %}
-                    <th>{{ room_name }}</th>
-                    {% endfor %}
-                </tr>
-                {% for booked_list in bool_booked %}
-                    <tr>
-                        <td>{{ convertMinutesToString(startTime + loop.index0 * 15) }}</td>
-
-                        {% for booking in booked_list %}
-                        <td {{ "style=background-color:red;" if booking else "style=background-color:green;" }}> </td>
+            <!-- FILTER FORM -->
+            <form method="POST" id="page-body">
+                <div class="filter-element">
+                    <p><b>Building</b></p>
+                    <select name="building">
+                        {% for b in buildingList %}
+                        <option value={{ b }} {{ "selected" if b == buildingSelected }}>{{ b }}</option>
                         {% endfor %}
+                    </select>
+                </div>
+
+                <div class="filter-element">
+                    <p><b>Date</b></p>
+                    <select name="date">
+                        {% for d in dateList %}
+                        <option value={{ d }} {{ "selected" if d == dateSelected }}>{{ d }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+
+                <div class="filter-element">
+                    <p><b>Start Time</b></p>
+                    <input type="time" name="start_time" min="00:00" max="11:00" value={{ convertMinutesToString(startTimeSelected) if startTimeSelected else "08:00" }} />
+                </div>
+
+                <div class="filter-element">
+                    <p><b>End Time</b></p>
+                    <input type="time" name="end_time" min="17:00" max="23:45" value={{ convertMinutesToString(endTimeSelected) if endTimeSelected else "19:00" }} />
+                </div>
+
+                <div class="submit-button">
+                    <p><input type="submit"></p>
+                </div>
+            </form>
+
+            <!-- TIMETABLE PROPER CODE -->
+            <div id="table-parent">
+                <h1> {{ buildingSelected }} on {{ dateSelected }}</h1>
+                <table id="table-body">
+                    <tr>
+                        {% if titles is defined %}
+                            <th>Times</th>
+                            {% for room_name in titles %}
+                            <th>{{ room_name }}</th>
+                            {% endfor %}
+                        {% endif %}
                     </tr>
-                {% endfor %}
-            </table>
-        </div>
-        <!-- **************************************************************************************************** -->
-        <!-- TIMETABLE REFERENCE CODE -->
-        <div>
-            <h1>{{ dateSelected }}</h1>
-            <table>
-                <tr>
-                    <th>Times</th>
-                    <th>3.07</th>
-                    <th>4.02</th>
-                    <th>4.03</th>
-                </tr>
-                <tr>
-                    <td>00:00</td>
-                    <td style="background-color: green"></td>
-                    <td></td>
-                    <td></td>
-                </tr>
-                <tr>
-                    <td>00:15</td>
-                    <td></td>
-                    <td style="background-color: red"></td>
-                    <td></td>
-                </tr>
-                <tr>
-                    <td>00:30</td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                </tr>
-            </table>
-        </div>
+                    {% for booked_list in bool_booked %}
+                        <tr>
+                            <td>{{ convertMinutesToString(startTime + loop.index0 * 15) }}</td>
 
-
+                            {% for booking in booked_list %}
+                            <td {{ "style=background-color:red;" if booking else "style=background-color:green;" }}> </td>
+                            {% endfor %}
+                        </tr>
+                    {% endfor %}
+                </table>
+            </div>
+        </div>
     </body>
 </html>
