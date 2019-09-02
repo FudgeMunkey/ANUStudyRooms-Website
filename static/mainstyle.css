@@ -30,6 +30,10 @@ h1 {
     text-align: center;
 }
 
+.hour-block {
+    border-top: 1px solid black;
+}
+
 #page-body {
     margin: auto;
     width: 50%;

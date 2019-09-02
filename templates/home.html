@@ -59,11 +59,15 @@
                     </tr>
                     {% for booked_list in bool_booked %}
                         <tr>
-                            <td>{{ convertMinutesToString(startTime + loop.index0 * 15) }}</td>
+                            <!-- Check if we are looking at an hourly block, set hourly accordingly -->
+                            {% set hourly = True if (startTime + loop.index0 * 15) % 60 == 0 %}
+                            <td {{ "class=hour-block" if hourly }} >{{ convertMinutesToString(startTime + loop.index0 * 15) }}</td>
 
                             {% for booking in booked_list %}
-                            <td {{ "style=background-color:red;" if booking else "style=background-color:green;" }}> </td>
+                            <td {{ "class=hour-block" if hourly }} {{ "style=background-color:red;" if booking else "style=background-color:green;" }}> </td>
                             {% endfor %}
+
+                            {% set hourly = False %}
                         </tr>
                     {% endfor %}
                 </table>
