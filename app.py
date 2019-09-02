@@ -24,15 +24,22 @@ def generateDates(num_days):
 
 
 # Convert times to minutes for easier comparison
-def convertStringToMinutes(time_list):
-    new_list = []
+def convertStringToMinutes(time):
+    # Just a single value, not a list
+    if type(time) != list:
+        split = time.split(':')
+        hours = int(split[0]) * 60
+        minutes = int(split[1])
+        new_time = hours + minutes
+        return new_time
 
-    for t in time_list:
+    # Convert a list of times
+    new_list = []
+    for t in time:
         split = t.split(':')
         hours = int(split[0]) * 60
         minutes = int(split[1])
         new_list.append(hours + minutes)
-
     return new_list
 
 
@@ -44,6 +51,7 @@ def utility_processor():
         minutes = int(mins - hours * 60)
         outStr = str(hours).zfill(2) + ':' + str(minutes).zfill(2)
         return outStr
+
     return dict(convertMinutesToString=convertMinutesToString)
 
 
@@ -73,9 +81,9 @@ def filter():
     bool_array = []
 
     # Go through each time slot (i.e. 00:00-00:15, 00:15-00:30, etc)
-    time_start = 0
+    time_start = convertStringToMinutes(request.form['start_time'])
     # time_start = 540
-    time_end = 1425
+    time_end = convertStringToMinutes(request.form['end_time'])
     increment = 15
     for c in range(int(time_end / 15) + 1 - int(time_start / 15)):
         bool_row = []
@@ -100,6 +108,7 @@ def filter():
 
     return render_template('home.html', buildingList=BUILDINGS, dateList=generateDates(DAYS_NUM),
                            buildingSelected=selected_building, dateSelected=selected_date,
+                           startTimeSelected=time_start, endTimeSelected=time_end,
                            startTime=time_start, titles=sliced_json.keys(), bool_booked=bool_array)
 
 
