@@ -1,12 +1,23 @@
-import datetime
-
 from flask import Flask, render_template, request
+import datetime
 import json
+
+import requests
 
 app = Flask(__name__)
 
+SCANNER_URL = "http://172.18.0.20/scan.json"
+
 DAYS_NUM = 11
 BUILDINGS = ["Chifley", "Hancock", "Law", "Menzies"]
+
+# GET request to grab the scan.json file from the scanner container
+def getScannerData():
+    s = requests.Session()
+    text = s.get(SCANNER_URL)
+    s.close()
+
+    return text.content
 
 
 # Generate a list of dates in the format: YYYY-MM-DD
@@ -66,9 +77,12 @@ def filter():
     selected_date = request.form['date']
 
     # Read in values
-    text = open("static/data/scan.json", "r")
-    my_content = text.read()
-    text.close()
+    # Ideally we should store this value in a file and only GET the server if it's outdated
+    # text = open("static/data/scan.json", "r")
+    # my_content = text.read()
+    # text.close()
+
+    my_content = getScannerData()
 
     # Convert text to json and slice relevant info
     parsed_json = (json.loads(my_content))

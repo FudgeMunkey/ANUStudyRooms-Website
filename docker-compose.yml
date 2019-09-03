@@ -1,6 +1,15 @@
 version: "3"
 services:
-  web:
-    build: .
+  nginx:
+    image: anusr-website-image
+    container_name: anusr-website-container
+    networks:
+      static-network:
+        ipv4_address: 172.18.0.10
     ports:
       - "80:80"
+networks:
+  static-network:
+    ipam:
+      config:
+        - subnet: 172.18.0.0/16

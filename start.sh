@@ -1,9 +1,7 @@
 #!/bin/bash
 
-APP="anusr-website"
+APP="anusr-website-image"
 
 docker build -t ${APP} .
 
-docker run -d -p 80:80 anusr-website
-
-echo ${APP}
+docker-compose up
