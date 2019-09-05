@@ -1,8 +1,11 @@
 from flask import Flask, render_template, request
 import datetime
 import json
-
 import requests
+
+# ***************************************************************************
+# CONFIG
+ON_PRODUCTION = False
 
 app = Flask(__name__)
 
@@ -10,6 +13,7 @@ SCANNER_URL = "http://172.20.0.2/scan.json"
 
 DAYS_NUM = 7
 BUILDINGS = ["Chifley", "Hancock", "Law", "Menzies"]
+
 
 # GET request to grab the scan.json file from the scanner container
 def getScannerData():
@@ -76,13 +80,13 @@ def filter():
     selected_building = request.form['building']
     selected_date = request.form['date']
 
-    # Read in values
-    # Ideally we should store this value in a file and only GET the server if it's outdated
-    # text = open("static/data/scan.json", "r")
-    # my_content = text.read()
-    # text.close()
-
-    my_content = getScannerData()
+    # Where date comes from depends in we're on production or not
+    if ON_PRODUCTION:
+        my_content = getScannerData()
+    else:
+        text = open("static/data/scan.json", "r")
+        my_content = text.read()
+        text.close()
 
     # Convert text to json and slice relevant info
     parsed_json = (json.loads(my_content))
@@ -99,7 +103,12 @@ def filter():
     # time_start = 540
     time_end = convertStringToMinutes(request.form['end_time'])
     increment = 15
-    for c in range(int(time_end / 15) + 1 - int(time_start / 15)):
+    # for c in range(int(time_end / 15) + 1 - int(time_start / 15)):
+    time_range = int(time_end / 15) + 0 - int(time_start / 15)
+    if time_end > 1425:
+        time_range += 1
+
+    for c in range(time_range):
         bool_row = []
 
         # Go through each of the rooms
@@ -120,12 +129,21 @@ def filter():
             bool_row.append(booked)
         bool_array.append(bool_row)
 
+        # Format last scan time
+        scan_end = datetime.datetime.strptime(parsed_json["Scan_End"], "%Y-%m-%d %H:%M:%S.%f")
+        scan_end = scan_end.strftime("%Y-%m-%d %H:%M:%S")
+
     return render_template('home.html', buildingList=BUILDINGS, dateList=generateDates(DAYS_NUM),
                            buildingSelected=selected_building, dateSelected=selected_date,
                            startTimeSelected=time_start, endTimeSelected=time_end,
-                           startTime=time_start, titles=sliced_json.keys(), bool_booked=bool_array)
+                           startTime=time_start, titles=sliced_json.keys(), bool_booked=bool_array,
+                           last_scan=scan_end)
 
 
 if __name__ == '__main__':
-    app.debug = False
-    app.run(host='0.0.0.0', port=80)
+    app.debug = not ON_PRODUCTION
+
+    if ON_PRODUCTION:
+        app.run(host='0.0.0.0', port=80)
+    else:
+        app.run(host='127.0.0.1', port=5000)

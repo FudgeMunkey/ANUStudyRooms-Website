@@ -17,6 +17,7 @@ td {
 
 h1 {
     text-align: center;
+    margin: 10px;
 }
 
 .filter-element {
@@ -34,16 +35,28 @@ h1 {
     border-top: 1px solid black;
 }
 
+.booked {
+    background-color: red;
+}
+
+.unbooked {
+    background-color: green;
+}
+
+.last-scan {
+    text-align: center;
+}
+
 #page-body {
     margin: auto;
-    width: 50%;
-    border: 3px solid orange;
-    padding: 5px;
+    width: 60%;
+    border: 3px solid #e69500;
+    padding: 5px 5px 10px;
 }
 
 #table-parent {
     text-align: center;
-    width: 70%;
+    width: 85%;
     margin: auto;
 }
 
