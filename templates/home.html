@@ -11,7 +11,7 @@
             <h1>ANU Study Room Timetables</h1>
 
             <!-- FILTER FORM -->
-            <form method="POST" id="page-body">
+            <form method="POST" id="filter-body">
                 <div class="filter-element">
                     <p><b>Building</b></p>
                     <select name="building">
@@ -58,6 +58,14 @@
                 {% endif %}
 
                 <table id="table-body">
+                    {% if titles is defined %}
+                    <colgroup>
+                        <col class="time-col"/>
+                        {% for trash in room_name %}
+                            <col />
+                        {% endfor %}
+                    </colgroup>
+                    {% endif %}
                     <tr>
                         {% if titles is defined %}
                             <th>Times</th>
