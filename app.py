@@ -5,11 +5,11 @@ import requests
 
 # ***************************************************************************
 # CONFIG
-ON_PRODUCTION = False
+ON_PRODUCTION = True
 
 app = Flask(__name__)
 
-SCANNER_URL = "http://172.20.0.2/scan.json"
+SCANNER_URL = "http://anusr-scanner-container://scan.json"
 
 DAYS_NUM = 7
 BUILDINGS = ["Chifley", "Hancock", "Law", "Menzies"]
