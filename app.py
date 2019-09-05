@@ -6,9 +6,9 @@ import requests
 
 app = Flask(__name__)
 
-SCANNER_URL = "http://172.18.0.20/scan.json"
+SCANNER_URL = "http://172.20.0.2/scan.json"
 
-DAYS_NUM = 11
+DAYS_NUM = 7
 BUILDINGS = ["Chifley", "Hancock", "Law", "Menzies"]
 
 # GET request to grab the scan.json file from the scanner container
@@ -127,5 +127,5 @@ def filter():
 
 
 if __name__ == '__main__':
-    app.debug = True
+    app.debug = False
     app.run(host='0.0.0.0', port=80)
