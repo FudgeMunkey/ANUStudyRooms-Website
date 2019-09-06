@@ -32,12 +32,12 @@
 
                 <div class="filter-element">
                     <p><b>Start Time</b></p>
-                    <input type="time" name="start_time" min="00:00" max="11:00" value={{ convertMinutesToString(startTimeSelected) if startTimeSelected else "08:00" }} required />
+                    <input type="time" name="start_time" min="00:00" value={{ convertMinutesToString(startTimeSelected) if startTimeSelected else "08:00" }} required />
                 </div>
 
                 <div class="filter-element">
                     <p><b>End Time</b></p>
-                    <input type="time" name="end_time" min="17:00" max="24:00" value={{ convertMinutesToString(endTimeSelected) if endTimeSelected else "19:00" }} required />
+                    <input type="time" name="end_time" value={{ convertMinutesToString(endTimeSelected) if endTimeSelected else "19:00" }} required />
                 </div>
 
                 <div class="submit-button">

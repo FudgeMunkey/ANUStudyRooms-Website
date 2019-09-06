@@ -129,9 +129,9 @@ def filter():
             bool_row.append(booked)
         bool_array.append(bool_row)
 
-        # Format last scan time
-        scan_end = datetime.datetime.strptime(parsed_json["Scan_End"], "%Y-%m-%d %H:%M:%S.%f")
-        scan_end = scan_end.strftime("%Y-%m-%d %H:%M:%S")
+    # Format last scan time
+    scan_end = datetime.datetime.strptime(parsed_json["Scan_End"], "%Y-%m-%d %H:%M:%S.%f")
+    scan_end = scan_end.strftime("%Y-%m-%d %H:%M:%S")
 
     return render_template('home.html', buildingList=BUILDINGS, dateList=generateDates(DAYS_NUM),
                            buildingSelected=selected_building, dateSelected=selected_date,
